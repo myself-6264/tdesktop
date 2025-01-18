@@ -1,0 +1,13 @@
+id: com.github.myself_6264.tdesktop
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+command: tdesktop
+modules:
+  - name: tdesktop
+    buildsystem: cmake
+    builddir: true
+    sources:
+      - type: git
+        url: https://github.com/myself-6264/tdesktop.git
+        branch: main
