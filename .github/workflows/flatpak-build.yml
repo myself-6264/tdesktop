@@ -1,0 +1,34 @@
+name: Flatpak Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  flatpak-build:
+    runs-on: ubuntu-latest
+    container:
+      image: bitnami/flatpak-builder:latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install dependencies
+      run: |
+        flatpak install -y flathub org.freedesktop.Platform//22.08
+        flatpak install -y flathub org.freedesktop.Sdk//22.08
+    
+    - name: Build Flatpak
+      run: |
+        flatpak-builder --repo=telegram-repo build-dir 64gram-flatpak.yml
+    
+    - name: Create Flatpak bundle
+      run: |
+        flatpak build-bundle telegram-repo 64gram.flatpak org.telegram.64gram
+    
+    - name: Upload Flatpak artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: 64gram-flatpak
+        path: 64gram.flatpak
