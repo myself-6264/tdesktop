@@ -1,13 +1,31 @@
-id: com.github.myself_6264.tdesktop
-runtime: org.freedesktop.Platform
-runtime-version: '23.08'
-sdk: org.freedesktop.Sdk
-command: tdesktop
+Here is the revised Flatpak manifest file with the updated App ID:
+YAML
+
+---
+runtime: org.kde.Platform/x86_64/5.15-21.08
+runtime-version: '21.08'
+sdk: org.kde.Sdk/x86_64/5.15-21.08
+
+app-id: TelegramMessengerLLP.TelegramDesktop
+branch: dev
+runtime-branch: 21.08
+
 modules:
-  - name: tdesktop
-    buildsystem: cmake
-    builddir: true
+
+  - name: telegram-desktop
+    buildsystem: cmake-ninja
     sources:
       - type: git
         url: https://github.com/myself-6264/tdesktop.git
-        branch: main
+        branch: dev
+        commit: '${GITHUB_SHA}'
+
+finish-args:
+  - --share=ipc
+  - --share=network
+  - --socket=x11
+  - --filesystem=home
+  - --env=QT_PLUGIN_PATH=/app/lib/qt5/plugins
+  - --env=QT_QPA_PLATFORMTHEME=qt5ct
+  - --env=GTK_PATH=/app/lib/gtk-3.0
+  - --env=GTK2_RC_FILES=/app/etc/gtk-2.0/gtkrc
